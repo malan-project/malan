@@ -1,5 +1,12 @@
+from flask import Flask
 import pyclamd
-cd = pyclamd.ClamdAgnostic()
-cd.ping()
-cd.version()
 
+app = Flask(__name__)
+cd = pyclamd.ClamdAgnostic()
+
+@app.route('/version')
+def status():
+  if cd.ping():
+    return cd.version()
+  else:
+    'Unable to connect to clamd'
