@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Diagnosis</h1>
+<form method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <fieldset>
+    <legend>FileToInput</legend>
+    <div>{{form.testfile()}}</div>
+    {% for error in form.testfile.errors %}
+      <span> {{ error }} </span>
+    {% endfor %}
+    <div> {{form.submit()}}</div>
+  </fieldset>
+</form>
+{% if test %}
+  {% for result in results %}
+    <h2>{{ result.key() }}</h2>
+  {% endfor %}
+{% endif %}
+{% endblock content%}

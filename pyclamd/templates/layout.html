@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    {% if title %}
+    <title>Malan-{{ title }}</title>
+    {% else %}
+    <title>Malan</title>
+    {% endif %}
+  </head>
+  <body>
+  <div style="float: left;width:10%">
+    <a href={{url_for('home')}}>Home</a>
+  </div>
+  <div style="float: left;width:10%">
+    <a href={{url_for('diagnosis')}}>Diagnosis</a>
+  </div>
+  <div style="float: left;width:10%">
+    <a href={{url_for('wiki')}}>Wiki</a>
+  </div>
+  <div style="float: left;width:50%">
+    <a href={{url_for('version')}}>version</a>
+  </div>
+  <div style="float: left;width:10%">[]</div>
+  <div style="float: left;width:10%">search</div>
+  <p>
+  <hr>
+  {% block content %}
+  {% endblock content %}
+  </body>
+</html>
