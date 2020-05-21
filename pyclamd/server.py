@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, url_for, redirect, request
+from secrets import token_hex
 import pyclamd
 import os
 
@@ -17,10 +18,18 @@ def home():
 
 @app.route('/diagnosis', methods=['GET', 'POST'])
 def diagnosis():
+    results={}
     form = FileForm()
     if form.validate_on_submit():
-        print('validate post')
-        return redirect(url_for('diagnosis'))
+        testfile = form.testfile.data
+        if(testfile):
+            tfname , tfext = os.path.splitext(testfile.filename)
+            storedname = os.path.realpath(os.path.curdir) + '/testdata/' + token_hex(8) + tfext
+            form.testfile.data.save(storedname)
+            results = cd.scan_file(storedname)
+            os.remove(storedname)
+            del storedname
+        return render_template('result.html', results=results)
     return render_template('diagnosis.html', form=form)
 
 @app.route('/wiki')
