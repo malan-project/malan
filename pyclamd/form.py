@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SubmitField
+from flask_wtf.file import FileAllowed
+from wtforms import StringField, SubmitField, MultipleFileField
 from wtforms.validators import DataRequired
 
 class SearchForm(FlaskForm):
@@ -8,5 +8,5 @@ class SearchForm(FlaskForm):
     submit = SubmitField('Search')
 
 class FileForm(FlaskForm):
-    testfile = FileField('Files')
+    testfile = MultipleFileField('Files')
     submit = SubmitField('Diagnosis')

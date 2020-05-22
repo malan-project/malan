@@ -1,10 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
   {% if results %}
-    {% for key, value in results.items() %}
-      Problem:{{value}}<p>
+    {% for result in results %}
+      {% if result %}
+        {% for key, value in result.items() %}
+          <h2>{{key}}</h2>
+          <p>Problem: {{value}}<br>
+        {% endfor %}
+      {% endif %}
     {% endfor %}
   {% else %}
-    <h1>No Problem Found!<p></h1>
+    <h1>No Problem Found!</h1>
   {% endif %}
 {% endblock %}
