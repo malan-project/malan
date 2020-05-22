@@ -16,17 +16,24 @@ def home():
 
 @app.route('/diagnosis', methods=['GET', 'POST'])
 def diagnosis():
-    results={}
+    results=[]
     form = FileForm()
     if form.validate_on_submit():
-        testfile = form.testfile.data
-        if(testfile):
-            tfname , tfext = os.path.splitext(testfile.filename)
-            storedname = os.path.realpath(os.path.curdir) + '/testdata/' + token_hex(8) + tfext
-            form.testfile.data.save(storedname)
-            results = cd.scan_file(storedname)
-            os.remove(storedname)
-            del storedname
+        for testfile in form.testfile.data:
+            if(testfile):
+                tfname , tfext = os.path.splitext(testfile.filename)
+                storedname = os.path.realpath(os.path.curdir) + '/testdata/' + token_hex(8) + tfext
+                testfile.save(storedname)
+                result = cd.scan_file(storedname)
+                if result:
+                    try:
+                        result[testfile.filename] = result.pop(storedname)
+                    except Exception:
+                        assert(False)
+                print(result)
+                results.append(result)
+                os.remove(storedname)
+                del storedname
         return render_template('result.html', results=results)
     return render_template('diagnosis.html', form=form)
 
