@@ -32,8 +32,7 @@ def diagnosis():
                         result[testfile.filename] = result.pop(storedname)
                     except Exception:
                         assert(False)
-                print(result)
-                results.append(result)
+                    results.append(result)
                 os.remove(storedname)
                 del storedname
         return render_template('result.html', results=results)
