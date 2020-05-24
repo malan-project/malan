@@ -11,6 +11,5 @@ class FileForm(FlaskForm):
     submit = SubmitField('Diagnosis')
 
     def validate_testfile(self, testfile):
-        print(testfile.data)
         if len(testfile.data) == 1 and testfile.data[0].filename=='':
             raise ValidationError("This field is required.")
