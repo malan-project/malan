@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
-{% block content %}
+{% block contents %}
+<style>
+.input{
+  background-color: #C0C0C0;
+}
+</style>
 <h1>Diagnosis</h1>
 {% if form %}
   <form method="POST" enctype="multipart/form-data">
@@ -13,4 +18,4 @@
     </fieldset>
   </form>
 {% endif %}
-{% endblock content %}
+{% endblock contents %}
