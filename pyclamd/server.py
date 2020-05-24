@@ -12,7 +12,7 @@ cd = pyclamd.ClamdAgnostic()
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('main.html')
 
 @app.route('/diagnosis', methods=['GET', 'POST'])
 def diagnosis():
@@ -37,9 +37,13 @@ def diagnosis():
     return render_template('diagnosis.html', form=form)
 
 @app.route('/wiki')
-def wiki():
+@app.route('/wiki/')
+def wikiMain():
     return render_template('wiki.html', search='Search Something')
 
+@app.route('/wiki/w/<search>')
+def wikiIndex(search):
+    return render_template('wiki.html', search=search)
 @app.route('/version')
 def version():
     return render_template('version.html', cd=cd)
