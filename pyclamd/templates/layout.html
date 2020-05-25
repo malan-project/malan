@@ -1,7 +1,11 @@
 <!doctype html>
 <html lang="ko-kr">
   <head>
+    {% if title %}
+    <title>Malan - {{title}}</title>
+    {% else %}
     <title>MalAn</title>
+    {% endif %}
     <!-- Required meta tags -->
     <script type="text/javascript"></script>
     <meta charset="utf-8">
@@ -34,7 +38,7 @@
         margin-bottom: 100px;
       }
     </style>
-
+    {% block style %}{% endblock %}
     <!-- Favicon -->
     <link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico') }}>
     <!-- Bootstrap CSS -->
@@ -58,9 +62,6 @@
           <li class="nav-item active">
             <a class="nav-link" href="{{url_for('wikiMain')}}">WiKI</a>
             <!--위키로 연결되는 링크 삽입-->
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{{url_for('diagnosis')}}">Diagnosis(*temporary)</a>
           </li>
         </ul>
         <ui class="navbar-nav navbar-right">
@@ -136,10 +137,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script>
       $('[data-toggle="popover"]').popover();
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     </script>
+    {% block script %}{% endblock %}
   </body>
 </html>

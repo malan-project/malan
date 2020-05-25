@@ -1,14 +1,33 @@
 {% extends "layout.html" %}
+{% block style %}
+<style>
+#testfile{
+  display:none;
+}
+#submit{
+  display: none;
+}
+</style>
+{% endblock %}
 {% block contents %}
     <div class="container-fluid">
-     <div class="jumbotron jumbotron-fluid bg-primary text-white margin-bottom: 50px margin:center-block">
-       <img class="img-rounded" src="/static/images/cloud.png" width="100px" height="100px">
-        <h2> Drag and Drop files here to upload</h2>
-        <button type="button" class="btn btn-light">Browse File</button>
-        <!-- 파일 -->
-        <button type="button" class="btn btn-success">Edit Tool</button>
-        <!---->
-     </div>
+      <form method="POST" enctype="multipart/form-data">
+        <label id="testfile-label" for="testfile" class="jumbotron jumbotron-fluid bg-primary text-white margin-bottom: 50px margin:center-block" style="display:block;">
+          {% if form %}
+            {{ form.hidden_tag() }}
+            {{ form.testfile() }}
+          {% endif %}
+          <img class="img-rounded" src="/static/images/cloud.png" width="100px" height="100px">
+          <h2> Drag and Drop files here to upload</h2>
+            <button type="button" class="btn btn-light" onclick="submitBtn()">
+              Browse File
+              {{form.submit()}}
+            </button>
+          <!-- 파일 -->
+          <button type="button" class="btn btn-success">Edit Tool</button>
+          <!---->
+        </label>
+      </form>
 
      <div class="row">
       <div class="col-md-2">
@@ -95,3 +114,32 @@
 
     </div>
 {% endblock contents %}
+
+{% block script %}
+<script>
+  function handleDroppedFile(evt){
+    evt.preventDefault();
+    var dT = evt.originalEvent.dataTransfer;
+    var files = dT.files;
+    if(files && files.length){
+      $('#testfile')[0].files = files;
+      submitBtn();
+    }
+}
+$('#testfile').on({
+  'change': submitBtn
+})
+
+$('#testfile-label').on({
+  'drop': handleDroppedFile,
+  'dragover': function (evt){evt.preventDefault();}});
+
+function testfileBtn() {
+  document.getElementById('testfile').click();
+}
+
+function submitBtn() {
+  document.getElementById('submit').click();
+}
+</script>
+{% endblock %}
