@@ -4,7 +4,7 @@ from secrets import token_hex
 import pyclamd
 import os
 
-SECRET_KEY= os.urandom(32)
+SECRET_KEY= token_hex(32)
 app = Flask(__name__)
 #cd = pyclamd.ClamdAgnostic()
 cd = pyclamd.ClamdUnixSocket()
@@ -12,13 +12,9 @@ cd = pyclamd.ClamdUnixSocket()
 if not cd.ping():
   raise Exception('Unable to connect to clamd')
 
-@app.route('/')
-@app.route('/home')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def home():
-    return render_template('main.html')
-
-@app.route('/diagnosis', methods=['GET', 'POST'])
-def diagnosis():
     s_results=[]
     d_results=[]
     form = FileForm()
@@ -40,7 +36,7 @@ def diagnosis():
             del storedname
         return render_template('result.html',
             danger_results=d_results, safe_results=s_results)
-    return render_template('diagnosis.html', form=form)
+    return render_template('main.html', form=form)
 
 @app.route('/wiki')
 @app.route('/wiki/')
