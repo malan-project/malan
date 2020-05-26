@@ -10,7 +10,7 @@ app = Flask(__name__)
 cd = pyclamd.ClamdUnixSocket()
 
 if not cd.ping():
-  raise Exception('Unable to connect to clamd')
+    raise Exception('Unable to connect to clamd')
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
