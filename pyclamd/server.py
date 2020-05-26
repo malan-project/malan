@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from flask import Flask, render_template, url_for, redirect, request
 from secrets import token_hex
 import pyclamd
@@ -9,7 +10,7 @@ app = Flask(__name__)
 cd = pyclamd.ClamdUnixSocket()
 
 if not cd.ping():
-  raise Exception('Unable to connect to clamd')
+    raise Exception('Unable to connect to clamd')
 
 @app.route('/version')
 def status():
@@ -63,4 +64,4 @@ def wikiIndex(search):
     return render_template('wiki.html', search=search)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
