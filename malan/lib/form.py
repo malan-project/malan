@@ -7,9 +7,9 @@ class SearchForm(FlaskForm):
     submit = SubmitField('Search')
 
 class FileForm(FlaskForm):
-    testfile = MultipleFileField('Files')
+    test_file = MultipleFileField('Files')
     submit = SubmitField('Diagnosis')
 
-    def validate_testfile(self, testfile):
-        if len(testfile.data) == 1 and testfile.data[0].filename=='':
+    def validate_test_file(self, test_file):
+        if len(test_file.data) == 1 and test_file.data[0].filename=='':
             raise ValidationError("This field is required.")

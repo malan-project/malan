@@ -13,6 +13,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = token_hex(32)
 app.config['BLOCK_SIZE'] = 4096
 app.config['FILES_PATH'] = '/var/lib/files'
+
+# CLAMD 서버의 주소
 app.config['CLAMD_URL'] = 'http://localhost:4000'
 
 @app.route('/', methods=['GET', 'POST'])
@@ -41,13 +43,13 @@ def home():
     d_results=[]
     form = FileForm()
     if form.validate_on_submit():
-        for testfile in form.testfile.data:
-            digest = upload_file(testfile.stream)
+        for test_file in form.test_file.data:
+            digest = upload_file(test_file.stream)
             scan_res = scan_file(digest)
             if scan_res['status'] == 'SAFE':
-                s_results.append({digest: ('SAFE', 'NO')})
+                s_results.append({test_file.filename: ('SAFE', 'NO')})
             elif scan_res['status'] == 'UNSAFE':
-                d_results.append({digest: ('UNSAFE', scan_res['desc'])})
+                d_results.append({test_file.filename: ('UNSAFE', scan_res['desc'])})
 
         return render_template('result.html',
              danger_results=d_results, safe_results=s_results)
