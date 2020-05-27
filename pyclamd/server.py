@@ -6,8 +6,7 @@ import os
 SECRET_KEY= token_hex(32)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
-#cd = pyclamd.ClamdAgnostic()
-cd = pyclamd.ClamdUnixSocket()
+cd = pyclamd.ClamdAgnostic()
 
 if not cd.ping():
     raise Exception('Unable to connect to clamd')
@@ -21,7 +20,7 @@ def home():
         아래 알고리즘, 특히 if form.validate_on_submit(): 하위구문은
         POST방식으로 파일을 받았을 때의 실행을 명시합니다.
             서버에 파일을 업로드하면
-            서버는 이를 /var/lib/(랜덤 8자 hex).(원본 확장자)
+            서버는 이를 /var/lib/(SHA512 hash)
             에 저장하고 clamav를 실행합니다.
             실행 결과는
             s_result(안전한 파일 목록, (*필요시)추가 데이터),
