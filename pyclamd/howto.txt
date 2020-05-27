@@ -1,5 +1,5 @@
 sudo apt-get install clamav-daemon clamav-freshclam clamav-unofficial-sigs
 sudo freshclam
 sudo service clamav-daemon start
-python3 server.py
+python3 wsgi.py
 sudo service clamav-daemon stop

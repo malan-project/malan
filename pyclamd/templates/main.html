@@ -19,10 +19,10 @@
           {% endif %}
           <img class="img-rounded" src="/static/images/cloud.png" width="100px" height="100px">
           <h2> Drag and Drop files here to upload</h2>
-            <button type="button" class="btn btn-light" onclick="submitBtn()">
+            <span type="button" class="btn btn-light">
               Browse File
               {{form.submit()}}
-            </button>
+            </span>
           <!-- 파일 -->
           <button type="button" class="btn btn-success">Edit Tool</button>
           <!---->
@@ -31,7 +31,9 @@
 
      <div class="row">
       <div class="col-md-2">
-        <img class="img-circle" src="static/images/icon.png" width="200px" height="200px" href="#">
+        <a href="{{url_for('wikiMain')}}">
+          <img class="img-circle" src="static/images/icon.png" width="200px" height="200px">
+        </a>
         <p style="font-size: small; text-align:center text-bold"> Click to enter MaLaN Wiki</p>
       </div>
 
