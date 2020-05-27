@@ -7,9 +7,9 @@ RUN pip3 install -r /etc/requirements.txt
 
 COPY ./server.py /srv/server.py
 COPY ./wsgi.py /srv/wsgi.py
-COPY ./form.py /srv/form.py
 COPY ./static /srv/static
 COPY ./templates /srv/templates
+COPY ./lib /srv/lib
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod o+x /usr/bin/entrypoint.sh
