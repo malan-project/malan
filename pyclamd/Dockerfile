@@ -17,5 +17,6 @@ RUN chmod o+x /usr/bin/entrypoint.sh
 RUN mkdir /var/run/clamav
 RUN chown clamav:clamav /var/run/clamav
 RUN chmod 750 /var/run/clamav
+VOLUME /var/lib/files
 EXPOSE 5000
 CMD /usr/bin/entrypoint.sh

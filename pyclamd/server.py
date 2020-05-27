@@ -37,7 +37,7 @@ def home():
     if form.validate_on_submit():
         for testfile in form.testfile.data:
             tfname, tfext = os.path.splitext(testfile.filename)
-            storedname = os.path.realpath(os.path.curdir) + '/testdata/' + token_hex(8) + tfext
+            storedname = '/var/lib/files/' + token_hex(8) + tfext
             testfile.save(storedname)
             result = cd.scan_file(storedname)
             if result:
