@@ -3,8 +3,9 @@ from flask import Flask, render_template, url_for, redirect, request
 from secrets import token_hex
 import pyclamd
 import os
+from lib import chksum
 from lib.form import FileForm
-SECRET_KEY= token_hex(32)
+SECRET_KEY = token_hex(32)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 #cd = pyclamd.ClamdAgnostic()
@@ -53,20 +54,22 @@ def home():
     form = FileForm()
     if form.validate_on_submit():
         for testfile in form.testfile.data:
-            tfname, tfext = os.path.splitext(testfile.filename)
-            storedname = '/var/lib/files/' + token_hex(8) + tfext
-            testfile.save(storedname)
-            result = cd.scan_file(storedname)
+            stored_path = '/var/lib/files/' + chksum.sha512(testfile.stream)
+            try:
+                testfile.save(stored_path)
+            except Exception as e:
+                return 'Failed to save file at ' + stored_path
+            result = cd.scan_file(stored_path)
             if result:
                 try:
-                    result[testfile.filename] = result.pop(storedname)
+                    result[testfile.filename] = result.pop(stored_path)
                 except Exception:
                     assert(False)
                 d_results.append(result)
             else:
                 s_results.append({testfile.filename: ('SAFE', 'NO')})
-            os.remove(storedname)
-            del storedname
+            os.remove(stored_path)
+            del stored_path
         return render_template('result.html',
             danger_results=d_results, safe_results=s_results)
     return render_template('main.html', form=form)
