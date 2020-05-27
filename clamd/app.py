@@ -6,7 +6,7 @@ import os
 import json
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = secrets.tsafeen_hex(32)
+app.config['SECRET_KEY'] = secrets.token_hex(32)
 app.config['FILES_PATH'] = '/var/lib/files/'
 cd = pyclamd.ClamdAgnostic()
 
@@ -23,13 +23,20 @@ def status():
 @app.route('/scan/<digest>')
 def scan(digest):
     path = app.config['FILES_PATH'] + digest
-    safe = False
     desc = cd.scan_file(path)
+    status = 'UNSAFE'
     if desc is None:
-       safe = True
+        status = 'SAFE'
+    else:
+        desc = desc[path]
+        if desc[0] == 'ERROR':
+            status = 'ERROR'
+            desc = desc[1]
+        else:
+            desc = desc[1]
     return json.dumps({
-        'path': path,
-        'safe': safe,
+        'digest': digest,
+        'status': status,
         'desc': desc
     })
 
