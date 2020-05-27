@@ -1,11 +1,10 @@
 import sys
 import hashlib
-def sha512(path):
-    h = hashlib.sha512()
-    with open(path, 'rb') as f:
-        while True:
-            chunk = f.read(h.block_size)
-            if not chunk:
-                break
-            h.update(chunk)
-        return h.hexdigest()
+def sha512(stream):
+    hashfn = hashlib.sha512()
+    while True:
+        chunk = stream.read(hashfn.block_size)
+        if not chunk:
+            break
+        hashfn.update(chunk)
+    return hashfn.hexdigest()
