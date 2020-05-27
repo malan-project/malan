@@ -21,8 +21,9 @@
             {% for key, value in result.items() %}
               <tr>
                 <td>{{key}}</td>
-                <td>{{value[0]}}</td>
-                <td>{{value[1]}}</td>
+                {% for i in range(value|length) %}
+                  <td>{{value[i]}}</td>
+                {% endfor %}
                 <td><a href="{{url_for('wikiIndex', search=key)}}">Wiki</a></td>
               </tr>
             {% endfor %}
