@@ -1,6 +1,18 @@
 {% extends "layout.html" %}
 {% block style %}
 <style>
+  .center-block{float: none;}
+  .jumbotron{
+    width: 80vw;
+    max-width: 700px;
+    height: 46vw;
+    max-height: 400px;
+    min-height: 300px;
+    margin: auto;
+    text-align: center;
+    line-height: 200%;
+    margin-bottom: 100px;
+  }
 #testfile{
   display:none;
 }
@@ -12,21 +24,21 @@
 {% block contents %}
     <div class="container-fluid">
       <form method="POST" enctype="multipart/form-data">
-        <label id="testfile-label" for="testfile" class="jumbotron jumbotron-fluid bg-primary text-white margin-bottom: 50px margin:center-block" style="display:block;">
+          <label id="testfile-label" for="testfile" class="jumbotron jumbotron-fluid bg-primary text-white margin-bottom: 50px margin:center-block" style="display:block;">
           {% if form %}
             {{ form.hidden_tag() }}
             {{ form.testfile() }}
           {% endif %}
           <img class="img-rounded" src="/static/images/cloud.png" width="100px" height="100px">
           <h2> Drag and Drop files here to upload</h2>
-            <span type="button" class="btn btn-light">
-              Browse File
-              {{form.submit()}}
-            </span>
+          <span type="button" class="btn btn-light">
+            Browse File
+            {{form.submit()}}
+          </span>
           <!-- 파일 -->
           <button type="button" class="btn btn-success">Edit Tool</button>
           <!---->
-        </label>
+          </label>
       </form>
 
      <div class="row">
