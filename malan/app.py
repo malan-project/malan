@@ -5,11 +5,15 @@ import os
 import hashlib
 import tempfile
 import shutil
+import json
+import requests
+from .lib.form import FileForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = token_hex(32)
 app.config['BLOCK_SIZE'] = 4096
-app.config['FILES_PATH'] = '/var/lib/files/'
+app.config['FILES_PATH'] = '/var/lib/files'
+app.config['CLAMD_URL'] = 'http://localhost:4000'
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -38,24 +42,16 @@ def home():
     form = FileForm()
     if form.validate_on_submit():
         for testfile in form.testfile.data:
-            stored_path = '/var/lib/files/' + chksum.sha512(testfile.stream)
-            try:
-                testfile.save(stored_path)
-            except Exception as e:
-                return 'Failed to save file at ' + stored_path
-            result = cd.scan_file(stored_path)
-            if result:
-                try:
-                    result[testfile.filename] = result.pop(stored_path)
-                except Exception:
-                    assert(False)
-                d_results.append(result)
-            else:
-                s_results.append({testfile.filename: ('SAFE', 'NO')})
-            os.remove(stored_path)
-            del stored_path
+            digest = upload_file(testfile.stream)
+            scan_res = scan_file(digest)
+            if scan_res['status'] == 'SAFE':
+                s_results.append({digest: ('SAFE', 'NO')})
+            elif scan_res['status'] == 'UNSAFE':
+                d_results.append({digest: ('UNSAFE', scan_res['desc'])})
+
         return render_template('result.html',
-            danger_results=d_results, safe_results=s_results)
+             danger_results=d_results, safe_results=s_results)
+
     return render_template('main.html', form=form)
 
 @app.route('/wiki')
@@ -77,17 +73,25 @@ def wikiIndex(search):
 @app.route('/upload', methods=['POST'])
 def upload():
     for fname in request.files:
-        tfile = tempfile.NamedTemporaryFile(mode='wb', delete=False)
-        sha512 = hashlib.sha512()
-        while True:
-            chunk = request.files[fname].stream.read(app.config['BLOCK_SIZE'])
-            if not chunk:
-                break
-            tfile.write(chunk)
-            sha512.update(chunk)
-        tfile.close()
-        digest = sha512.hexdigest()
-        dest_path = app.config['FILES_PATH'] + digest
-        shutil.copy(tfile.name, dest_path)
-        os.remove(tfile.name)
+        digest = upload_file(request.files[fname].stream)
+    return json.dumps({'digest': digest})
+
+def upload_file(stream):
+    tfile = tempfile.NamedTemporaryFile(mode='wb', delete=False)
+    sha512 = hashlib.sha512()
+    while True:
+        chunk = stream.read(app.config['BLOCK_SIZE'])
+        if not chunk:
+            break
+        tfile.write(chunk)
+        sha512.update(chunk)
+    tfile.close()
+    digest = sha512.hexdigest()
+    dfile = app.config['FILES_PATH'] + '/' + digest
+    shutil.copy(tfile.name, dfile)
+    os.chmod(dfile, 444)
+    os.remove(tfile.name)
     return digest
+
+def scan_file(digest):
+    return json.loads(requests.get(app.config['CLAMD_URL'] + '/' + 'scan' + '/' + digest).text)
