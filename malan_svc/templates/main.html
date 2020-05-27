@@ -24,7 +24,7 @@
 {% block contents %}
     <div class="container-fluid">
       <form method="POST" enctype="multipart/form-data">
-          <label id="test_file-label" for="test_file" class="jumbotron jumbotron-fluid bg-primary text-white margin-bottom: 50px margin:center-block" style="display:block;">
+        <label id="test_file-label" for="test_file" class="jumbotron jumbotron-fluid bg-primary text-white margin-bottom: 50px margin:center-block" style="display:block;">
           {% if form %}
             {{ form.hidden_tag() }}
             {{ form.test_file() }}
@@ -33,12 +33,14 @@
           <h2> Drag and Drop files here to upload</h2>
           <span type="button" class="btn btn-light">
             Browse File
-            {{form.submit()}}
           </span>
+          {{form.submit()}}
           <!-- 파일 -->
-          <button type="button" class="btn btn-success">Edit Tool</button>
+          <span type="button" class="btn btn-success">
+            Edit Tool
+          </span>
           <!---->
-          </label>
+        </label>
       </form>
 
      <div class="row">
