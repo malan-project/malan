@@ -35,7 +35,7 @@ def home():
         아래 알고리즘, 특히 if form.validate_on_submit(): 하위구문은
         POST방식으로 파일을 받았을 때의 실행을 명시합니다.
             서버에 파일을 업로드하면
-            서버는 이를 testdata/(랜덤 8자 hex).(원본 확장자)
+            서버는 이를 /var/lib/(랜덤 8자 hex).(원본 확장자)
             에 저장하고 clamav를 실행합니다.
             실행 결과는
             s_result(안전한 파일 목록, (*필요시)추가 데이터),
@@ -93,4 +93,7 @@ if __name__ == '__main__':
     다만 버그가 있다면 서버를 통해 프로젝트 파일을 수정할 수도 있으므로
     반드시 배포시에는 debug=False 옵션을 사용해야 합니다.
     """
-    app.run(host='0.0.0.0', debug=False)
+    DEBUG = False
+    if 'DEBUG' in os.environ and os.environ['DEBUG'] == '1':
+        DEBUG = True
+    app.run(host='0.0.0.0', debug=DEBUG)
