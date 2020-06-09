@@ -21,14 +21,16 @@ def status():
 @app.route('/convert/<digest>')
 def scan(digest):
     try:
-        WIDTH = 256
+        ORI_WIDTH = 4096
+        IMAGE_SIZE = (32, 32)
         path = app.config['FILES_PATH'] + digest
         data = np.fromfile(path, dtype='uint8')
-        if data.shape[0] % WIDTH != 0:
-            data = np.pad(data, (0, WIDTH - f.shape[0] % WIDTH))
-        data = data.reshape((-1, WIDTH))
+        if data.shape[0] % ORI_WIDTH != 0:
+            data = np.pad(data, (0, ORI_WIDTH - f.shape[0] % ORI_WIDTH))
+        data = data.reshape((-1, ORI_WIDTH))
         image_path = app.config['IMAGES_PATH'] + digest + '.png'
         image = PIL.Image.fromarray(data)
+        image = image.resize(IMAGE_SIZE, PIL.Image.NEAREST)
         image.save(image_path)
         status = 'SUCCESS'
         error = None
