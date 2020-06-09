@@ -11,6 +11,11 @@ app.config['SECRET_KEY'] = secrets.token_hex(32)
 app.config['FILES_PATH'] = '/var/lib/files/'
 app.config['IMAGES_PATH'] = '/var/lib/images/'
 
+
+@app.route('/', methods=['GET'])
+def home():
+    return 'ML server home'
+
 @app.route('/status')
 @app.route('/version')
 def status():
@@ -26,7 +31,7 @@ def scan(digest):
         path = app.config['FILES_PATH'] + digest
         data = np.fromfile(path, dtype='uint8')
         if data.shape[0] % ORI_WIDTH != 0:
-            data = np.pad(data, (0, ORI_WIDTH - f.shape[0] % ORI_WIDTH))
+            data = np.pad(data, (0, ORI_WIDTH - data.shape[0] % ORI_WIDTH))
         data = data.reshape((-1, ORI_WIDTH))
         image_path = app.config['IMAGES_PATH'] + digest + '.png'
         image = PIL.Image.fromarray(data)
@@ -42,7 +47,3 @@ def scan(digest):
         'error': error,
         'digest': digest,
     })
-
-@app.route('/', methods=['GET'])
-def home():
-    return 'ML server home'
