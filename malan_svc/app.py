@@ -15,7 +15,7 @@ app.config['BLOCK_SIZE'] = 4096
 app.config['FILES_PATH'] = '/var/lib/files'
 
 # CLAMD 서버의 주소
-app.config['CLAMD_URL'] = 'http://localhost:4000'
+app.config['CLAMD_URL'] = 'http://clamd:8080'
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])

@@ -1,0 +1,20 @@
+version: '3'
+services:
+  malan:
+    user: ${CUR_UID}
+    networks:
+      - malan-net
+    volumes:
+      - /var/lib/files:/var/lib/files
+    build: malan_svc
+    ports:
+      - '8080:8080'
+  clamd:
+    user: ${CUR_UID}
+    networks:
+      - malan-net
+    volumes:
+      - /var/lib/files:/var/lib/files
+    build: clamd_svc
+networks:
+  malan-net: {}
