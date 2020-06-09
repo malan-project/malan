@@ -14,8 +14,11 @@ app.config['SECRET_KEY'] = token_hex(32)
 app.config['BLOCK_SIZE'] = 4096
 app.config['FILES_PATH'] = '/var/lib/files'
 
-# CLAMD 서버의 주소
+# CLAMD server address
 app.config['CLAMD_URL'] = 'http://clamd:8080'
+# ML server address
+app.config['ML_URL'] = 'http://ml:8080'
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -46,6 +49,7 @@ def home():
         for test_file in form.test_file.data:
             digest = upload_file(test_file.stream)
             scan_res = scan_file(digest)
+            print(convert_file(digest))
             if scan_res['status'] == 'SAFE':
                 s_results.append({test_file.filename: ('SAFE', 'NO')})
             elif scan_res['status'] == 'UNSAFE':
@@ -97,3 +101,6 @@ def upload_file(stream):
 
 def scan_file(digest):
     return json.loads(requests.get(app.config['CLAMD_URL'] + '/' + 'scan' + '/' + digest).text)
+
+def convert_file(digest):
+    return json.loads(requests.get(app.config['ML_URL'] + '/' + 'convert' + '/' + digest).text)
