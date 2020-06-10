@@ -9,6 +9,7 @@ services:
     build: malan_svc
     ports:
       - '8080:8080'
+
   clamd:
     user: ${CUR_UID}
     networks:
@@ -16,6 +17,14 @@ services:
     volumes:
       - /var/lib/files:/var/lib/files
     build: clamd_svc
+
+  magic:
+    user: ${CUR_UID}
+    networks:
+      - malan-net
+    volumes:
+      - /var/lib/files:/var/lib/files
+    build: magic_svc
 
   ml:
     user: ${CUR_UID}
