@@ -13,6 +13,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = token_hex(32)
 app.config['BLOCK_SIZE'] = 4096
 app.config['FILES_PATH'] = '/var/lib/files'
+app.config['IMAGES_PATH'] = '/var/lib/images'
+
 
 # CLAMD server address
 app.config['CLAMD_URL'] = 'http://clamd:8080'
