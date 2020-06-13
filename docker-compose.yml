@@ -6,6 +6,7 @@ services:
       - malan-net
     volumes:
       - /var/lib/files:/var/lib/files
+      - /var/lib/images:/var/lib/images
     build: malan_svc
     ports:
       - '8080:8080'

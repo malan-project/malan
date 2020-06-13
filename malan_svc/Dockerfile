@@ -19,3 +19,5 @@ COPY ./wsgi.py /srv/wsgi.py
 COPY ./lib /srv/lib
 COPY ./static /srv/static
 COPY ./templates /srv/templates
+VOLUME /var/lib/images
+
