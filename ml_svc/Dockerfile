@@ -3,6 +3,8 @@ FROM ubuntu
 VOLUME /var/lib/files
 EXPOSE 8080
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt update
 RUN apt install -y python3 python3-pip uwsgi uwsgi-plugin-python3
 
