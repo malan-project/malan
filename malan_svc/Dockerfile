@@ -4,7 +4,7 @@ VOLUME /var/lib/files
 EXPOSE 8080
 
 RUN apk --no-cache update
-RUN apk --no-cache add python3-dev uwsgi uwsgi-python3 py-pip
+RUN apk --no-cache add python3-dev uwsgi uwsgi-python3 py-pip zlib-dev jpeg-dev gcc musl-dev
 
 COPY requirements.txt /etc/requirements.txt
 RUN pip3 install -r /etc/requirements.txt

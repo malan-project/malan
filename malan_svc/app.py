@@ -7,6 +7,7 @@ import tempfile
 import shutil
 import json
 import requests
+from PIL import Image
 from .lib.form import FileForm
 
 app = Flask(__name__)
@@ -44,21 +45,32 @@ def home():
         GET 방식으로 접근했을 때, 즉 단순히 페이지에 접근했을 때는
         메인 페이지를 보여줍니다.
     """
-    s_results=[]
-    d_results=[]
+    results=[]
     form = FileForm()
     if form.validate_on_submit():
         for test_file in form.test_file.data:
             digest = upload_file(test_file.stream)
-            scan_res = scan_file(digest)
-            print(convert_file(digest))
-            if scan_res['status'] == 'SAFE':
-                s_results.append({test_file.filename: ('SAFE', 'NO')})
-            elif scan_res['status'] == 'UNSAFE':
-                d_results.append({test_file.filename: ('UNSAFE', scan_res['desc'])})
-
+            clam_res = scan_file(digest)
+            ml_res = convert_file(digest)
+            risk = 0
+            img_from = '/var/lib/images/' + digest + '.png'
+            img_to = './srv/static/images/ML/' + digest + '.png'
+            shutil.copy2(img_from,img_to)
+            image = Image.open(img_to)
+            image.resize((128, 128), resample=Image.BOX).save(img_to)
+            if(clam_res['status'] == 'UNSAFE'):
+                risk = risk + 1
+            if(ml_res['status'] == 'UNSAFE'):
+                risk = risk + 1
+            results.append({
+            'name':test_file.filename,
+            'risk':risk,
+            'clam_res':clam_res,
+            'ml_res':ml_res
+            })
+            
         return render_template('result.html',
-             danger_results=d_results, safe_results=s_results)
+             results=results, ml_img='static/images/ML/' + digest + '.png')
 
     return render_template('main.html', form=form)
 
