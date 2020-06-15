@@ -66,11 +66,12 @@ def home():
             'name':test_file.filename,
             'risk':risk,
             'clam_res':clam_res,
-            'ml_res':ml_res
+            'ml_res':ml_res,
+            'ml_img':'static/images/ML/' + digest + '.png'
             })
             
         return render_template('result.html',
-             results=results, ml_img='static/images/ML/' + digest + '.png')
+             results=results)
 
     return render_template('main.html', form=form)
 
