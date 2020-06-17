@@ -20,6 +20,7 @@ or use
 
 ### use malanwiki(temporary)
 > docker build --pull --rm -f "Dockerfile" -t wiki:latest "."
+
 > docker run -d -p 7000:70 wiki:latest
 
 ## edit project
