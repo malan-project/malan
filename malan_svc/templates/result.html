@@ -33,6 +33,22 @@
       	</tr>
       </tbody>
     </table>
+
+    <h2>file magic diagnosis</h2>
+    <table class="table table-bordered table-striped table-hover">
+      <tbody>
+      	<tr>
+      	  <th scope="row" width="50">magic</th>
+      	  <td>{{ result['magic_res']['magic'] }}</td>
+      	</tr>
+      	<tr>
+      	  <th scope="row">mime</th>
+      	  <td>{{ result['magic_res']['mime'] }}</td>
+      	</tr>
+      </tbody>
+    </table>
+
+
     <br>
     <h2>malan machine learning result</h2>
     <table class="table">
@@ -47,7 +63,7 @@
       	          <td>{{ result['ml_res']['status'] }}</td>
       	        </tr>
       	        <tr>
-      	        <th scope="row" width="50">problem</th>
+      	        <th scope="row" width="50">error</th>
       	        <td>{{ result['ml_res']['error'] }}</td>
                 </tr>
               </tbody>

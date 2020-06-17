@@ -17,11 +17,9 @@ app.config['FILES_PATH'] = '/var/lib/files'
 app.config['IMAGES_PATH'] = '/var/lib/images'
 
 
-# CLAMD server address
 app.config['CLAMD_URL'] = 'http://clamd:8080'
-# ML server address
 app.config['ML_URL'] = 'http://ml:8080'
-
+app.config['MAGIC_URL'] = 'http://magic:8080'
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -53,6 +51,7 @@ def home():
             clam_res = scan_file(digest)
             ml_convert_file(digest)
             ml_res = ml_scan_file(digest)
+            magic_res = magic_scan_file(digest)
             risk = 0
             img_from = '/var/lib/images/' + digest + '.png'
             img_to = './srv/static/images/ML/' + digest + '.png'
@@ -64,11 +63,12 @@ def home():
             if(ml_res['status'] == 'UNSAFE'):
                 risk = risk + 1
             results.append({
-            'name':test_file.filename,
-            'risk':risk,
-            'clam_res':clam_res,
-            'ml_res':ml_res,
-            'ml_img':'static/images/ML/' + digest + '.png'
+                'name': test_file.filename,
+                'risk': risk,
+                'clam_res': clam_res,
+                'ml_res': ml_res,
+                'magic_res': magic_res,
+                'ml_img': 'static/images/ML/' + digest + '.png'
             })
             
         return render_template('result.html',
@@ -123,3 +123,6 @@ def ml_convert_file(digest):
 
 def ml_scan_file(digest):
     return json.loads(requests.get(app.config['ML_URL'] + '/' + 'scan' + '/' + digest).text)
+
+def magic_scan_file(digest):
+    return json.loads(requests.get(app.config['MAGIC_URL'] + '/' + 'scan' + '/' + digest).text)
