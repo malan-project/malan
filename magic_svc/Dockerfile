@@ -4,7 +4,7 @@ VOLUME /var/lib/files
 EXPOSE 8080
 
 RUN apk --no-cache update
-RUN apk --no-cache add python3 uwsgi uwsgi-python3 py-pip
+RUN apk --no-cache add python3 uwsgi uwsgi-python3 py3-pip
 
 RUN apk --no-cache add py3-magic
 

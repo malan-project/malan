@@ -10,7 +10,7 @@ import torch.nn as nn
 from .malan_net import MalanNet
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-ORI_WIDTH = 4096
+ORI_WIDTH = 1024
 IMAGE_SIZE = (32, 32)
 
 app = Flask(__name__)
