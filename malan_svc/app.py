@@ -51,7 +51,8 @@ def home():
         for test_file in form.test_file.data:
             digest = upload_file(test_file.stream)
             clam_res = scan_file(digest)
-            ml_res = convert_file(digest)
+            ml_convert_file(digest)
+            ml_res = ml_scan_file(digest)
             risk = 0
             img_from = '/var/lib/images/' + digest + '.png'
             img_to = './srv/static/images/ML/' + digest + '.png'
@@ -117,5 +118,8 @@ def upload_file(stream):
 def scan_file(digest):
     return json.loads(requests.get(app.config['CLAMD_URL'] + '/' + 'scan' + '/' + digest).text)
 
-def convert_file(digest):
+def ml_convert_file(digest):
     return json.loads(requests.get(app.config['ML_URL'] + '/' + 'convert' + '/' + digest).text)
+
+def ml_scan_file(digest):
+    return json.loads(requests.get(app.config['ML_URL'] + '/' + 'scan' + '/' + digest).text)
