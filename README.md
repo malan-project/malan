@@ -37,7 +37,7 @@ Since the project runs on the docker container, changing the local files does no
 ## make issue
 
  1. Clarify the purpose(bug_fix, development, optimization, etc)
- 2. 
+ 2. Follow coding style
  
 ## coding convention rule
 + [python](https://github.com/google/styleguide/blob/gh-pages/pyguide.md)
