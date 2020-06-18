@@ -2,6 +2,12 @@
 ![malan_logo](https://github.com/malan-project/malan/blob/master/malan_svc/static/images/logo.png)
 *malan* is a tool for malware analyzing. we provide analyzing tool based on machine learning and evaluation wiki site.
 
+## Used dataset for machine learning
+https://ieee-dataport.org/open-access/malware-analysis-datasets-raw-pe-image
+
+## Related paper
+https://arxiv.org/pdf/1909.07227.pdf
+
 ## how to start
 First, configure docker environment on yout local machine. 
 ### install
