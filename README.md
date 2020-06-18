@@ -9,12 +9,8 @@ Install the project to your local machine. Download and unzip the project or use
 > git clone https://github.com/malan-project/malan
 
 ### run
-In linux environment, use
-> bash run.sh
-
-or use
-
-> docker-compose -f "docker-compose.yml" up -d --build
+In linux environment, use following command
+> docker-compose up -d
 
 **compose up** in vscode(extension Docker required) also works.
 
@@ -24,11 +20,8 @@ or use
 > docker run -d -p 7000:70 wiki:latest
 
 ## edit project
-Since the project runs on the docker container, changing the local files does not immediately affect the program.
-
-**./rebuild.sh** to submit the files onto docker container, and
-
-**./run.sh** to run the project again(**docker-compose up** also works)
+After editing project, you have to rebuild docker iamges
+docker-compose build && docker-compose up -d
 
 ## pull request
 
